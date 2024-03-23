@@ -5,20 +5,52 @@
  * Compare it with the results from 3-promise-all.js
  */
 
-function wait1(t) {
-
+function wait1(t1) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+            resolve();
+        }, t1 * 1000)
+    });
 }
 
-function wait2(t) {
+function wait2(t2) {
+    return new Promise(function (resolve, reject) {
+        setTimeout(function () {
+            resolve();
+        }, t2 * 1000)
+    });
 
-}
+    function wait3(t3) {
+        return new Promise(function (resolve, reject) {
+            setTimeout(function () {
+                resolve();
+            }, t3 * 1000)
+        });
+    }
 
-function wait3(t) {
-
-}
-
-function calculateTime(t1, t2, t3) {
-
+    function calculateTime(t1, t2, t3) {
+        // Record the start time of the complete operation.
+        const start = Date.now();
+        // Here, each method returns a promise so we can chain them using .then() method.
+        return wait1(t1)
+            .then(() => {
+                // console.log("First Promise resolved");
+                // Return the next method that returns a promise.
+                return wait2(t2);
+            })
+            .then(() => {
+                // console.log("Second Promise resolved");
+                return wait3(t3);
+            })
+            .then(() => {
+                // console.log("Third Promise resolved");
+                // Record the end time of the complete operation.
+                const end = Date.now();
+                // Find the time difference and return it.
+                const difference = end - start;
+                return difference;
+            });
+    }
 }
 
 module.exports = calculateTime;
